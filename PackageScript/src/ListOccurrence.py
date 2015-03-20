@@ -19,6 +19,13 @@ def loadPackesNames():
     return res
 
 def reportPackagesOccurances(packagesNames):
+    def logRes(res):
+        with open('occuranceRes.csv', 'a') as f:
+            for r in res:
+                f.write(r + "\n")
+        f.close()
+        
+    res = []
     for dname, dirs, files in os.walk(rootFolfer):
         for fname in files:
             fpath = os.path.join(dname, fname)
@@ -26,8 +33,8 @@ def reportPackagesOccurances(packagesNames):
                 s = f.read()
             for pName in packagesNames:
                 if pName in s:
-                    print dname + "\\" +fname + " : " + pName
-        
+                    res += [dname + "\\" +fname + " : " + pName]
+    logRes(res)
 
 if __name__ == '__main__':
     main()
