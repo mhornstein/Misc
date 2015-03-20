@@ -3,7 +3,7 @@ import os
 Loads a list of packages to search recursively in a given root
 Prints the files in which packege name appears
 '''
-packagesNamesFile = "res.txt"
+packagesNamesFile = "res.csv"
 rootFolfer = "."
 
 def main():
@@ -15,7 +15,7 @@ def loadPackesNames():
     lines = [line.strip() for line in open(packagesNamesFile)]
     for line in lines:
         jarInfo=line.split(",")
-        res+= jarInfo[-1]
+        res+= [jarInfo[-1]]
     return res
 
 def reportPackagesOccurances(packagesNames):
@@ -25,8 +25,8 @@ def reportPackagesOccurances(packagesNames):
             with open(fpath) as f:
                 s = f.read()
             for pName in packagesNames:
-                if s.contains(pName):
-                    print fname + " : " + pName
+                if pName in s:
+                    print dname + "\\" +fname + " : " + pName
         
 
 if __name__ == '__main__':
