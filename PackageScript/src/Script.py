@@ -16,10 +16,12 @@ doneJarsLoc = "done"
 jarListFileName = "Jars2.csv"
 
 def main():
+    createRequiredDirs()
     jarsLoc = loadJarsUrl()
     os.chdir(jarDownloadLoc)
     packagesNames = {}
     for jar in jarsLoc:
+        print "Investigating: " + jar
         jarName = jar
         jarUrl = jarsLoc[jarName]
         
@@ -27,9 +29,19 @@ def main():
         unzipFile(jarName)
         packagesNames[jarName]= getPackagesNames()
         clean(jarName)
+    os.chdir("..//")
+    print "Done. Cleaning..."
     writeRes(packagesNames) 
+    removeRequiredDirs()
+    
+def createRequiredDirs():
+    if not os.path.exists(jarDownloadLoc):
+        os.makedirs(jarDownloadLoc)
+    if not os.path.exists(doneJarsLoc):
+        os.makedirs(doneJarsLoc)
         
 def loadJarsUrl():
+    print "Loading jars url out of the given file"
     jarsUrl = {}
     lines = [line.strip() for line in open(jarListFileName)]
     for line in lines:
@@ -80,5 +92,8 @@ def writeRes(packagesNames):
                 f.write(jarName + "," + packageName)
     f.close()
 
+def removeRequiredDirs():
+    shutil.rmtree(jarDownloadLoc)
+    shutil.rmtree(doneJarsLoc)
 if __name__ == '__main__':
     main()
